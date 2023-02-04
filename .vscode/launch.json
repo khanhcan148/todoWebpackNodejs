@@ -7,10 +7,12 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${file}",
-      "outFiles": ["${workspaceFolder}/**/*.js"]
+      "name": "Todo debug",
+      "program": "${workspaceFolder}/index.ts",
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "sourceMaps": true,
+      "smartStep": true
     }
   ]
 }
