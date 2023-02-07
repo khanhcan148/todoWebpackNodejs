@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import express, { Express } from "express";
-import Todo from "./db/models/todo";
+import { initAndSeedDb } from "./db/initDb";
 
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // set up db
-Promise.all([Todo.sync({ force: true })]);
+initAndSeedDb();
 
 // simple route
 app.get("/", (req, res) => {

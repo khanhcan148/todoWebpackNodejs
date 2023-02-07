@@ -39,6 +39,7 @@ Todo.init(
   },
   {
     sequelize: sequelizeConnection,
+    tableName: "Todo",
   }
 );
 
