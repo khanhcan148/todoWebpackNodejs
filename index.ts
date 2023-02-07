@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import express, { Express } from "express";
+import Todo from "./db/models/todo";
 
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -20,6 +21,9 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// set up db
+Promise.all([Todo.sync({ force: true })]);
 
 // simple route
 app.get("/", (req, res) => {
