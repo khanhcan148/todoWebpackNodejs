@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "develop": "webpack-dev-server --mode development",
-    "build:prod": "webpack --mode production",
+    "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
     "dev:wp": "concurrently \"npx tsc --watch\" \"nodemon dist/index.js --watch dist\""
   },
@@ -16,9 +16,12 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "inversify": "^6.0.1",
+    "inversify-express-utils": "^6.4.3",
     "lodash": "^4.17.21",
     "pg": "^8.9.0",
     "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.1.13",
     "sequelize": "^6.28.0"
   },
   "devDependencies": {
