@@ -1,55 +1,40 @@
+import { BelongsTo, DataType, ForeignKey } from "sequelize-typescript";
 import {
+  Table,
+  Column,
   Model,
-  InferAttributes,
-  InferCreationAttributes,
-  CreationOptional,
-  DataTypes,
-  ForeignKey,
-  NonAttribute,
-  Association,
-} from "sequelize";
-import sequelizeConnection from "../../config/config";
+  PrimaryKey,
+  AutoIncrement,
+  CreatedAt,
+  UpdatedAt,
+} from "sequelize-typescript";
 import Todo from "./todo";
 
-class SubTask extends Model<
-  InferAttributes<SubTask>,
-  InferCreationAttributes<SubTask>
-> {
-  declare id: CreationOptional<number>;
+@Table({ tableName: "SubTask" })
+class SubTask extends Model {
+  @PrimaryKey
+  @AutoIncrement
+  @Column(DataType.INTEGER.UNSIGNED)
+  id!: number;
 
-  declare label: string;
-  declare isDone: boolean;
-  declare toDoId: ForeignKey<Todo["id"]>;
-  declare toDo?: NonAttribute<Todo>;
-  declare createdAt: CreationOptional<Date>;
-  declare updatedAt: CreationOptional<Date>;
+  @Column(DataType.STRING)
+  label!: string;
+
+  @Column(DataType.BOOLEAN)
+  isDone!: boolean;
+
+  @ForeignKey(() => Todo)
+  @Column
+  toDoId!: number;
+
+  @BelongsTo(() => Todo, "toDoId")
+  toDo!: Todo;
+
+  @CreatedAt
+  createdAt!: Date;
+
+  @UpdatedAt
+  updatedAt!: Date;
 }
-
-SubTask.init(
-  {
-    id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    label: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    isDone: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updatedAt: DataTypes.DATE,
-  },
-  {
-    sequelize: sequelizeConnection,
-    tableName: "SubTask",
-  }
-);
 
 export default SubTask;

@@ -1,82 +1,37 @@
+import { DataType } from "sequelize-typescript";
 import {
+  Table,
+  Column,
   Model,
-  InferAttributes,
-  InferCreationAttributes,
-  CreationOptional,
-  DataTypes,
-  HasManyHasAssociationMixin,
-  HasManyCountAssociationsMixin,
-  HasManyHasAssociationsMixin,
-  HasManyCreateAssociationMixin,
-  HasManyAddAssociationMixin,
-  HasManyAddAssociationsMixin,
-  HasManyGetAssociationsMixin,
-  HasManyRemoveAssociationMixin,
-  HasManyRemoveAssociationsMixin,
-  HasManySetAssociationsMixin,
-  NonAttribute,
-  Association,
-} from "sequelize";
-import sequelizeConnection from "../../config/config";
+  HasMany,
+  PrimaryKey,
+  AutoIncrement,
+  CreatedAt,
+  UpdatedAt,
+} from "sequelize-typescript";
 import SubTask from "./subTask";
 
-class Todo extends Model<InferAttributes<Todo>, InferCreationAttributes<Todo>> {
-  declare id: CreationOptional<number>;
+@Table({ tableName: "Todo" })
+class Todo extends Model {
+  @PrimaryKey
+  @AutoIncrement
+  @Column(DataType.INTEGER.UNSIGNED)
+  id!: number;
 
-  declare label: string;
-  declare isDone: boolean;
-  declare createdAt: CreationOptional<Date>;
-  declare updatedAt: CreationOptional<Date>;
+  @Column(DataType.STRING)
+  label!: string;
 
-  declare subTasks?: NonAttribute<SubTask[]>;
-  declare static associations: {
-    subTasks: Association<Todo, SubTask>;
-  };
+  @Column(DataType.BOOLEAN)
+  isDone!: boolean;
 
-  declare getSubTasks: HasManyGetAssociationsMixin<SubTask>;
-  declare addSubTask: HasManyAddAssociationMixin<SubTask, number>;
-  declare addSubTasks: HasManyAddAssociationsMixin<SubTask, number>;
-  declare setSubTasks: HasManySetAssociationsMixin<SubTask, number>;
-  declare removeSubTask: HasManyRemoveAssociationMixin<SubTask, number>;
-  declare removeSubTasks: HasManyRemoveAssociationsMixin<SubTask, number>;
-  declare hasSubTask: HasManyHasAssociationMixin<SubTask, number>;
-  declare hasSubTasks: HasManyHasAssociationsMixin<SubTask, number>;
-  declare countSubTask: HasManyCountAssociationsMixin;
-  declare createSubTask: HasManyCreateAssociationMixin<SubTask, "toDoId">;
-  declare countSubTasks: HasManyCountAssociationsMixin;
+  @HasMany(() => SubTask)
+  subTasks!: SubTask[];
+
+  @CreatedAt
+  createdAt!: Date;
+
+  @UpdatedAt
+  updatedAt!: Date;
 }
-
-Todo.init(
-  {
-    id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    label: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    isDone: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-    updatedAt: DataTypes.DATE,
-  },
-  {
-    sequelize: sequelizeConnection,
-    tableName: "Todo",
-  }
-);
-
-Todo.hasMany(SubTask, {
-  sourceKey: "id",
-  foreignKey: "toDoId",
-  as: "subTasks",
-});
 
 export default Todo;

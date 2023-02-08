@@ -1,9 +1,8 @@
 import dotenv from "dotenv";
 import express, { Express } from "express";
 import { initAndSeedDb } from "./db/initDb";
-
-const bodyParser = require("body-parser");
-const cors = require("cors");
+import bodyParser from "body-parser";
+import cors from "cors";
 
 const app: Express = express();
 const port = process.env.PORT;
