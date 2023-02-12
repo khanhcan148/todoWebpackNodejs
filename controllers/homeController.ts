@@ -4,6 +4,7 @@ import {
   BaseHttpController,
   controller,
   httpGet,
+  interfaces,
   next,
   request,
   response,
@@ -12,7 +13,10 @@ import { TYPES } from "../types";
 import { inject } from "inversify";
 
 @controller("")
-export class HomeController extends BaseHttpController {
+export class HomeController
+  extends BaseHttpController
+  implements interfaces.Controller
+{
   constructor(
     @inject(TYPES.TodoService) private readonly _todoService: IToDoService
   ) {

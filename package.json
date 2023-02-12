@@ -7,8 +7,7 @@
     "develop": "webpack-dev-server --mode development",
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon dist/index.js --watch dist\"",
-    "swagger": "tsoa spec"
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon dist/index.js --watch dist\""
   },
   "author": "",
   "license": "ISC",
@@ -26,8 +25,7 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.28.0",
     "sequelize-typescript": "^2.1.5",
-    "swagger-ui-express": "^4.6.0",
-    "tsoa": "^5.1.1"
+    "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
