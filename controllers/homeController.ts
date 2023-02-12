@@ -1,34 +1,25 @@
 import { IToDoService } from "./../services/abstraction/IToDoService";
-import * as express from "express";
 import {
   BaseHttpController,
   controller,
   httpGet,
-  interfaces,
-  next,
-  request,
-  response,
 } from "inversify-express-utils";
 import { TYPES } from "../types";
 import { inject } from "inversify";
+import { Get, Route } from "tsoa";
 
-@controller("")
-export class HomeController
-  extends BaseHttpController
-  implements interfaces.Controller
-{
+@controller("/Home")
+@Route("/Home")
+export class HomeController extends BaseHttpController {
   constructor(
     @inject(TYPES.TodoService) private readonly _todoService: IToDoService
   ) {
     super();
   }
 
-  @httpGet("/")
-  public async Index(
-    @request() req: express.Request,
-    @response() res: express.Response,
-    @next() next: express.NextFunction
-  ) {
+  @httpGet("index")
+  @Get("index")
+  public async Index() {
     const data = await this._todoService.getAllToDo();
     return this.ok(data);
   }

@@ -9,6 +9,7 @@ import { bindings } from "./investifyConf";
 import { TYPES } from "./types";
 import { IToDoService } from "./services/abstraction/IToDoService";
 import express from "express";
+import swaggerUi from "swagger-ui-express";
 
 (async () => {
   dotenv.config();
@@ -37,6 +38,16 @@ import express from "express";
     );
     app.use(bodyParser.json());
     app.use(cors(corsConfig));
+
+    app.use(
+      "/docs",
+      swaggerUi.serve,
+      swaggerUi.setup(undefined, {
+        swaggerOptions: {
+          url: "/swagger.json",
+        },
+      })
+    );
   });
 
   const app = server.build();
