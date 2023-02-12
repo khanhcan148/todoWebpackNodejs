@@ -1,36 +1,33 @@
 import dotenv from "dotenv";
-import express, { Express } from "express";
-import { initAndSeedDb } from "./db/initDb";
 import bodyParser from "body-parser";
 import cors from "cors";
+import { InversifyExpressServer } from "inversify-express-utils";
+import { Container } from "inversify";
+import { bindings } from "./investifyConf";
 
-const app: Express = express();
-const port = process.env.PORT;
+(async () => {
+  dotenv.config();
 
-dotenv.config();
+  var corsConfig = {
+    origin: "http://localhost:8081",
+  };
 
-var corsConfig = {
-  origin: "http://localhost:8081",
-};
+  const PORT = process.env.PORT || 8080;
+  const container = new Container();
+  await container.loadAsync(bindings);
+  const app = new InversifyExpressServer(container);
 
-app.use(cors(corsConfig));
+  const server = app.build();
 
-// parse requests of content-type - application/json
-app.use(bodyParser.json());
+  server.use(cors(corsConfig));
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+  // parse requests of content-type - application/json
+  server.use(bodyParser.json());
 
-// set up db
-initAndSeedDb();
+  // parse requests of content-type - application/x-www-form-urlencoded
+  server.use(bodyParser.urlencoded({ extended: true }));
 
-// simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to todo application" });
-});
-
-// set port, listen for requests
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port: ${PORT}`);
-});
+  server.listen(PORT, () => {
+    console.log(`Server running at http://127.0.0.1:${PORT}/`);
+  });
+})();
