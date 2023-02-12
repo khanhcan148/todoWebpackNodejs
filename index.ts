@@ -1,9 +1,14 @@
+import { ToDoService } from "./services/ToDoService";
+import "reflect-metadata";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { InversifyExpressServer } from "inversify-express-utils";
-import { Container } from "inversify";
+import { Container, decorate, injectable } from "inversify";
 import { bindings } from "./investifyConf";
+import { TYPES } from "./types";
+import { IToDoService } from "./services/abstraction/IToDoService";
+import express from "express";
 
 (async () => {
   dotenv.config();
@@ -13,21 +18,30 @@ import { bindings } from "./investifyConf";
   };
 
   const PORT = process.env.PORT || 8080;
+  // container
   const container = new Container();
+
+  container.bind<IToDoService>(TYPES.TodoService).to(ToDoService);
+
   await container.loadAsync(bindings);
-  const app = new InversifyExpressServer(container);
 
-  const server = app.build();
+  // create server
+  const server = new InversifyExpressServer(container);
+  server.setConfig((app) => {
+    app.use(express.static("public"));
+    // add body parser
+    app.use(
+      bodyParser.urlencoded({
+        extended: true,
+      })
+    );
+    app.use(bodyParser.json());
+    app.use(cors(corsConfig));
+  });
 
-  server.use(cors(corsConfig));
+  const app = server.build();
 
-  // parse requests of content-type - application/json
-  server.use(bodyParser.json());
-
-  // parse requests of content-type - application/x-www-form-urlencoded
-  server.use(bodyParser.urlencoded({ extended: true }));
-
-  server.listen(PORT, () => {
+  app.listen(PORT, () => {
     console.log(`Server running at http://127.0.0.1:${PORT}/`);
   });
 })();
