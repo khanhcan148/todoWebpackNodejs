@@ -11,6 +11,9 @@ import { TYPES } from "../types";
 import { inject } from "inversify";
 import { Get, Post, Route } from "tsoa";
 
+interface ToDoViewModel {
+  label: string;
+}
 @controller("/todo")
 @Route("/todo")
 export class ToDoController extends BaseHttpController {
@@ -29,13 +32,21 @@ export class ToDoController extends BaseHttpController {
 
   @httpGet("/:id")
   @Get("/:id")
-  public GetById(@requestParam("id") id: number) {
-    return this.ok({ data: "Hello " + id });
+  public async GetById(@requestParam("id") id: number) {
+    const data = await this._todoService.getToDoById(id);
+    return this.ok(data);
   }
 
-  // @httpPost("/:id/create")
-  // @Post("/:id/create")
-  // public Create(@requestParam("id") id: number, @requestBody() body: string) {
-  //   return this.ok(body);
-  // }
+  @httpPost("/:id/create")
+  @Post("/:id/create")
+  public Create(
+    @requestParam("id") id: number,
+    @requestBody() createBody: ToDoViewModel
+  ) {
+    let result = {
+      body: createBody,
+      id: id,
+    };
+    return this.ok(result);
+  }
 }
