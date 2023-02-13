@@ -24,7 +24,7 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/Home": {
+		"/Home/index": {
 			"get": {
 				"operationId": "Index",
 				"responses": {

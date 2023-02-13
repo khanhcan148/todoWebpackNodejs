@@ -7,7 +7,7 @@
     "develop": "webpack-dev-server --mode development && tsoa spec",
     "build": "webpack --mode production && tsoa spec",
     "build:dev": "webpack --mode development && tsoa spec",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon dist/index.js --watch dist -x tsoa spec\"",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon dist/index.js --watch dist\" \"nodemon -x tsoa spec --watch dist\"",
     "swagger": "tsoa spec"
   },
   "author": "",
