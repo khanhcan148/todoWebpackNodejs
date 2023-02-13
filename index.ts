@@ -1,4 +1,4 @@
-import { ToDoService } from "./services/ToDoService";
+import { ToDoService } from "./src/services/ToDoService";
 import "reflect-metadata";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
@@ -6,8 +6,8 @@ import cors from "cors";
 import { InversifyExpressServer } from "inversify-express-utils";
 import { Container, decorate, injectable } from "inversify";
 import { bindings } from "./investifyConf";
-import { TYPES } from "./types";
-import { IToDoService } from "./services/abstraction/IToDoService";
+import { TYPES } from "./src/types";
+import { IToDoService } from "./src/services/abstraction/IToDoService";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 
