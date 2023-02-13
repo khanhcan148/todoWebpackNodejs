@@ -15,7 +15,7 @@ import SubTask from "./subTask";
 class Todo extends Model {
   @PrimaryKey
   @AutoIncrement
-  @Column(DataType.INTEGER.UNSIGNED)
+  @Column(DataType.INTEGER)
   id!: number;
 
   @Column(DataType.STRING)
